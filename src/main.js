@@ -18,6 +18,7 @@ const ZERO_COMMANDS = {
   rotation: { pitch: 0, yaw: 0, roll: 0 },
   boost: false
 };
+const INITIAL_ORBIT_ALTITUDE_KM = 1600;
 
 const textureFactory = new ProceduralTextureFactory();
 const sceneRoot = document.querySelector('#scene-root');
@@ -63,20 +64,30 @@ function spawnShipAtDefaultSite() {
   }
 
   const center = SPACE_CENTERS.NASA;
-  const normal = earth.getWorldSurfaceNormalFromLatLng(center.lat, center.lng);
-  const position = earth.getWorldSurfacePointFromLatLng(
-    center.lat,
-    center.lng,
-    solarSystem.getShipSpawnOffsetUnits()
-  );
-  const forward = earth.getWorldEastDirectionFromLatLng(center.lat, center.lng);
+  const spawn = createOrbitalSpawn(earth, center.lat, center.lng, center.name);
 
-  ship.spawnAt({
+  ship.spawnAt(spawn);
+}
+
+function createOrbitalSpawn(body, lat, lng, label) {
+  const normal = body.getWorldSurfaceNormalFromLatLng(lat, lng);
+  const forward = body.getWorldEastDirectionFromLatLng(lat, lng);
+  const altitudeUnits =
+    ship.getShipHeight() * 1.15 +
+    INITIAL_ORBIT_ALTITUDE_KM / body.getRadiusScaleKmPerUnit();
+  const position = body.getWorldSurfacePointFromLatLng(
+    lat,
+    lng,
+    altitudeUnits
+  );
+
+  return {
+    body,
     position,
     normal,
     forward,
-    label: center.name
-  });
+    label
+  };
 }
 
 function updateLabels(surfaceState, mapOpen, warping) {
@@ -161,8 +172,14 @@ navigationHUD.update({
 
 resolveGeoSpawn(solarSystem)
   .then((spawn) => {
-    ship.spawnAt(spawn);
-    ship.setSpawnLabel(spawn.label);
+    const orbitalSpawn = createOrbitalSpawn(
+      spawn.body,
+      spawn.lat,
+      spawn.lng,
+      spawn.label
+    );
+    ship.spawnAt(orbitalSpawn);
+    ship.setSpawnLabel(orbitalSpawn.label);
   })
   .catch(() => {
     ship.setSpawnLabel(SPACE_CENTERS.NASA.name);
