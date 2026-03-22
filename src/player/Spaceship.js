@@ -374,6 +374,10 @@ export default class Spaceship {
     return this.state;
   }
 
+  getVelocity(target = new THREE.Vector3()) {
+    return target.copy(this.velocity);
+  }
+
   update(deltaSeconds, commands, solarSystem, elapsedTimeSeconds) {
     const initialNearest = solarSystem.findNearestBody(this.group.position);
     const initialNearestBody = initialNearest?.body ?? null;

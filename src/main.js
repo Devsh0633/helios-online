@@ -1,6 +1,9 @@
 import CameraController from './cameras/CameraController.js';
 import SceneManager from './core/SceneManager.js';
 import SolarSystem from './core/SolarSystem.js';
+import NavigationHUD from './navigation/NavigationHUD.js';
+import SystemMap from './navigation/SystemMap.js';
+import WarpSystem from './navigation/WarpSystem.js';
 import HUD from './player/HUD.js';
 import { resolveGeoSpawn, SPACE_CENTERS } from './player/GeoSpawn.js';
 import PlayerController from './player/PlayerController.js';
@@ -28,6 +31,9 @@ const hud = new HUD(uiRoot);
 const ship = new Spaceship();
 const surfaceManager = new SurfaceManager(sceneManager, solarSystem, textureFactory);
 const hazardSystem = new HazardSystem();
+const warpSystem = new WarpSystem(sceneManager, solarSystem, ship, uiRoot);
+const systemMap = new SystemMap(uiRoot, solarSystem, ship, warpSystem);
+const navigationHUD = new NavigationHUD(uiRoot, sceneManager);
 
 sceneManager.scene.add(ship.group);
 
@@ -73,10 +79,8 @@ function spawnShipAtDefaultSite() {
   });
 }
 
-function updateLabels() {
-  const surfaceState = surfaceManager.getHUDState();
-
-  if (surfaceState.active || surfaceState.transitionActive) {
+function updateLabels(surfaceState, mapOpen, warping) {
+  if (surfaceState.active || surfaceState.transitionActive || mapOpen || warping) {
     for (const label of labelElements.values()) {
       label.classList.remove('visible');
     }
@@ -116,12 +120,19 @@ function togglePause() {
 
 sceneManager.setSelectionHandler((body) => {
   solarSystem.selectBody(body);
-  ship.setTargetBody(body);
+  systemMap.setSelectedBody(body);
+  warpSystem.setTarget(body);
   hud.setSelectionInfo(solarSystem.getSelectionInfo());
+});
 
-  if (cameraController.mapMode) {
-    sceneManager.focusOn(body);
-  }
+systemMap.setSurfaceStateProvider(() => surfaceManager.getHUDState());
+systemMap.onSelection((body) => {
+  solarSystem.selectBody(body);
+  systemMap.setSelectedBody(body);
+  hud.setSelectionInfo(solarSystem.getSelectionInfo());
+});
+systemMap.onOpenChange((open) => {
+  cameraController.setMapMode(open);
 });
 
 hud.onSimulationSpeedChange((speed) => {
@@ -129,7 +140,7 @@ hud.onSimulationSpeedChange((speed) => {
 });
 
 hud.onWarp(() => {
-  return;
+  warpSystem.requestWarp(surfaceManager.getHUDState());
 });
 
 applySimulationSpeed(DEFAULT_SIMULATION_SPEED);
@@ -138,8 +149,15 @@ hud.setSelectionInfo(null);
 hud.updateShipState(ship.getState());
 hud.updateSurfaceState(surfaceManager.getHUDState());
 hud.updateHazardState(hazardSystem.getState());
+hud.updateWarpState(warpSystem.getState());
 hud.setCameraMode(cameraController.getModeName());
 hud.setPaused(false);
+navigationHUD.update({
+  ship,
+  warpState: warpSystem.getState(),
+  mapOpen: systemMap.isOpen(),
+  elapsedTimeSeconds: 0
+});
 
 resolveGeoSpawn(solarSystem)
   .then((spawn) => {
@@ -152,10 +170,25 @@ resolveGeoSpawn(solarSystem)
 
 function handleActions() {
   if (playerController.consumeAction('Escape')) {
+    if (systemMap.isOpen()) {
+      systemMap.setOpen(false);
+      return;
+    }
+
     togglePause();
+    return;
   }
 
   if (paused) {
+    return;
+  }
+
+  if (playerController.consumeAction('KeyM')) {
+    systemMap.toggle();
+    return;
+  }
+
+  if (systemMap.isOpen()) {
     return;
   }
 
@@ -166,30 +199,36 @@ function handleActions() {
   if (playerController.consumeAction('KeyF')) {
     cameraController.toggleCinematicMode();
   }
-
-  if (playerController.consumeAction('KeyM')) {
-    cameraController.toggleMapMode();
-  }
 }
 
 function animate() {
   const deltaSeconds = sceneManager.clock.getDelta();
   const elapsedTimeSeconds = sceneManager.clock.elapsedTime;
+  let surfaceState = surfaceManager.getHUDState();
 
   handleActions();
 
   if (!paused) {
     const frustum = sceneManager.getFrustum();
     solarSystem.update(deltaSeconds, elapsedTimeSeconds, sceneManager.camera, frustum);
+    warpSystem.update(deltaSeconds, elapsedTimeSeconds, surfaceState);
 
-    const commands = cameraController.mapMode ? ZERO_COMMANDS : playerController.getShipCommands();
-    ship.update(deltaSeconds, commands, solarSystem, elapsedTimeSeconds);
+    const commands =
+      systemMap.isOpen() || warpSystem.isWarping()
+        ? ZERO_COMMANDS
+        : playerController.getShipCommands();
+
+    if (!warpSystem.isWarping()) {
+      ship.update(deltaSeconds, commands, solarSystem, elapsedTimeSeconds);
+    }
+
     surfaceManager.update(deltaSeconds, elapsedTimeSeconds, ship);
+    surfaceState = surfaceManager.getHUDState();
     hazardSystem.update(deltaSeconds, {
-      active: surfaceManager.getHUDState().active,
-      bodyName: surfaceManager.getHUDState().hazardBodyName,
-      hazardActive: surfaceManager.getHUDState().hazardActive,
-      inStructure: surfaceManager.getHUDState().inStructure
+      active: surfaceState.active,
+      bodyName: surfaceState.hazardBodyName,
+      hazardActive: surfaceState.hazardActive,
+      inStructure: surfaceState.inStructure
     });
 
     if (hazardSystem.consumeRespawn()) {
@@ -200,22 +239,33 @@ function animate() {
       ship,
       deltaSeconds,
       elapsedTimeSeconds,
-      solarSystem.selection,
-      surfaceManager.getHUDState()
+      warpSystem.getTargetBody() ?? solarSystem.selection,
+      surfaceState
     );
     sceneManager.update(deltaSeconds, elapsedTimeSeconds);
+    systemMap.update(deltaSeconds, elapsedTimeSeconds);
   } else {
     sceneManager.update(0, elapsedTimeSeconds);
+    systemMap.update(0, elapsedTimeSeconds);
   }
 
+  const warpState = warpSystem.getState();
   hud.setSimulationDate(solarSystem.getSimulationDate());
   hud.setCameraMode(cameraController.getModeName());
   hud.setSelectionInfo(solarSystem.getSelectionInfo());
   hud.updateShipState(ship.getState());
-  hud.updateSurfaceState(surfaceManager.getHUDState());
+  hud.updateSurfaceState(surfaceState);
   hud.updateHazardState(hazardSystem.getState());
-  updateLabels();
+  hud.updateWarpState(warpState);
+  navigationHUD.update({
+    ship,
+    warpState,
+    mapOpen: systemMap.isOpen(),
+    elapsedTimeSeconds
+  });
+  updateLabels(surfaceState, systemMap.isOpen(), warpSystem.isWarping());
   sceneManager.render();
+  warpSystem.renderOverlay();
 
   playerController.endFrame();
   requestAnimationFrame(animate);

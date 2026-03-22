@@ -53,19 +53,16 @@ export default class CameraController {
   }
 
   toggleMapMode() {
-    this.mapMode = !this.mapMode;
-    this.sceneManager.controls.enabled = this.mapMode;
+    this.setMapMode(!this.mapMode);
+  }
 
-    if (this.mapMode) {
-      this.sceneManager.controls.target.set(0, 0, 0);
-      this.sceneManager.focusSystemView();
-      return;
-    }
-
+  setMapMode(mapMode) {
+    this.mapMode = Boolean(mapMode);
     this.sceneManager.controls.enabled = false;
-    this.sceneManager.focusTransition = null;
-    this.sceneManager.focusedBody = null;
-    this.mode = this.manualMode;
+
+    if (!this.mapMode) {
+      this.mode = this.manualMode;
+    }
   }
 
   update(ship, deltaSeconds, elapsedTimeSeconds, targetBody, surfaceState = null) {

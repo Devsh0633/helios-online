@@ -600,7 +600,7 @@ export default class HUD {
         <ul class="helios-help-list">
           <li>W/S: Thrust Forward/Back | A/D: Strafe Left/Right | Q/E: Up/Down</li>
           <li>Arrow/Mouse: Pitch and Yaw | Z/X: Roll | Shift: Boost</li>
-          <li>F: Toggle Cinematic | V: Toggle First/Third Person | M: Open System Map</li>
+          <li>F: Toggle Cinematic | V: Toggle First/Third Person | M: Open System Map | W: Engage Warp in Map</li>
           <li>Right Mouse: Orbit Chase Camera | Esc: Pause Menu</li>
         </ul>
       </div>
@@ -691,6 +691,8 @@ export default class HUD {
         this.warpHandler();
       }
     });
+
+    this.lastSurfaceState = null;
   }
 
   onSimulationSpeedChange(handler) {
@@ -753,8 +755,6 @@ export default class HUD {
     this.flightModeValue.textContent = state.mode;
     this.targetNameValue.textContent = state.targetName;
     this.spawnLabelValue.textContent = state.spawnLabel;
-    this.warpButton.disabled = !state.warpReady;
-    this.warpButton.textContent = state.warpReady ? 'Warp Drive Ready' : 'Warp Drive Offline';
     this.landedIndicator.classList.toggle('visible', state.landed);
 
     const activeSegments = Math.round((state.fuelPercent / 100) * 5);
@@ -765,6 +765,8 @@ export default class HUD {
   }
 
   updateSurfaceState(state) {
+    this.lastSurfaceState = state;
+
     if (!state) {
       this.surfaceNoteValue.textContent = 'Orbital telemetry nominal.';
       this.hazardNoteValue.textContent = 'Suit systems nominal.';
@@ -784,6 +786,23 @@ export default class HUD {
       this.warpButton.disabled = true;
       this.warpButton.textContent = 'Surface Load Active';
     }
+  }
+
+  updateWarpState(state) {
+    if (!state) {
+      this.warpButton.disabled = true;
+      this.warpButton.textContent = 'Warp Drive Offline';
+      return;
+    }
+
+    if (this.lastSurfaceState?.active || this.lastSurfaceState?.transitionActive) {
+      this.warpButton.disabled = true;
+      this.warpButton.textContent = 'Surface Load Active';
+      return;
+    }
+
+    this.warpButton.disabled = !state.warpReady;
+    this.warpButton.textContent = state.buttonLabel ?? (state.warpReady ? 'Engage Warp' : 'Warp Drive Offline');
   }
 
   updateHazardState(state) {
