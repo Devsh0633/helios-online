@@ -19,6 +19,9 @@ export default class CameraController {
     this.tmpVector = new THREE.Vector3();
     this.tmpVector2 = new THREE.Vector3();
     this.tmpVector3 = new THREE.Vector3();
+    this.smoothedTargetPosition = new THREE.Vector3();
+    this.smoothedLookTarget = new THREE.Vector3();
+    this.smoothedUp = new THREE.Vector3(0, 1, 0);
     this.tmpQuaternion = new THREE.Quaternion();
     this.tmpQuaternion2 = new THREE.Quaternion();
     this.lookMatrix = new THREE.Matrix4();
@@ -113,30 +116,33 @@ export default class CameraController {
     desiredOffset.applyQuaternion(ship.group.quaternion);
 
     const targetPosition = ship.getCameraTargetPosition(this.tmpVector);
-    const desiredPosition = this.tmpVector2.copy(targetPosition).add(desiredOffset);
-    const followLerp = smoothFactor(5.8, deltaSeconds);
+    const followLerp = smoothFactor(surfaceState?.active ? 4.6 : 4.9, deltaSeconds);
+    this.smoothedTargetPosition.lerp(targetPosition, followLerp);
+    const desiredPosition = this.tmpVector2.copy(this.smoothedTargetPosition).add(desiredOffset);
     this.camera.position.lerp(desiredPosition, followLerp);
 
-    const lookAtTarget = this.tmpVector3.copy(targetPosition);
+    const lookAtTarget = this.tmpVector3.copy(this.smoothedTargetPosition);
 
     if (!surfaceState?.active && targetBody && ship.getState().targetName !== 'None') {
-      const targetWorld = targetBody.getWorldPosition(new THREE.Vector3());
-      lookAtTarget.lerp(targetWorld, 0.22);
+      const targetWorld = targetBody.getWorldPosition(this.tmpVector);
+      lookAtTarget.lerp(targetWorld, 0.14);
     } else {
-      lookAtTarget.add(ship.getForward(new THREE.Vector3()).multiplyScalar(6));
+      lookAtTarget.add(ship.getForward(this.tmpVector).multiplyScalar(5.2));
     }
 
-    this.lookMatrix.lookAt(this.camera.position, lookAtTarget, ship.getUp(new THREE.Vector3()));
+    this.smoothedLookTarget.lerp(lookAtTarget, smoothFactor(5.2, deltaSeconds));
+    this.smoothedUp.lerp(ship.getUp(this.tmpVector2), smoothFactor(4.6, deltaSeconds)).normalize();
+    this.lookMatrix.lookAt(this.camera.position, this.smoothedLookTarget, this.smoothedUp);
     this.tmpQuaternion2.setFromRotationMatrix(this.lookMatrix);
-    this.camera.quaternion.slerp(this.tmpQuaternion2, smoothFactor(7.5, deltaSeconds));
+    this.camera.quaternion.slerp(this.tmpQuaternion2, smoothFactor(5.8, deltaSeconds));
   }
 
   updateFirstPerson(ship, deltaSeconds) {
     const desiredPosition = ship.getCockpitWorldPosition(this.tmpVector);
-    this.camera.position.lerp(desiredPosition, smoothFactor(10.5, deltaSeconds));
+    this.camera.position.lerp(desiredPosition, smoothFactor(8.5, deltaSeconds));
     this.camera.quaternion.slerp(
       ship.group.quaternion,
-      smoothFactor(11.5, deltaSeconds)
+      smoothFactor(8.8, deltaSeconds)
     );
   }
 
@@ -164,11 +170,12 @@ export default class CameraController {
       Math.sin(angle) * baseRadius
     ).add(anchorPosition);
 
-    this.camera.position.lerp(desiredPosition, smoothFactor(1.8, deltaSeconds));
+    this.camera.position.lerp(desiredPosition, smoothFactor(1.35, deltaSeconds));
 
     const lookTarget = this.tmpVector3.copy(shipPosition).lerp(anchorPosition, 0.28);
-    this.lookMatrix.lookAt(this.camera.position, lookTarget, new THREE.Vector3(0, 1, 0));
+    this.smoothedLookTarget.lerp(lookTarget, smoothFactor(2.2, deltaSeconds));
+    this.lookMatrix.lookAt(this.camera.position, this.smoothedLookTarget, this.smoothedUp.set(0, 1, 0));
     this.tmpQuaternion2.setFromRotationMatrix(this.lookMatrix);
-    this.camera.quaternion.slerp(this.tmpQuaternion2, smoothFactor(2.6, deltaSeconds));
+    this.camera.quaternion.slerp(this.tmpQuaternion2, smoothFactor(2.1, deltaSeconds));
   }
 }

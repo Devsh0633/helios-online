@@ -18,6 +18,7 @@ function ensureStyles() {
       font-family: "Space Mono", "Consolas", monospace;
       text-transform: uppercase;
       letter-spacing: 0.06em;
+      --hud-gap: 14px;
     }
 
     .helios-hud * {
@@ -32,10 +33,10 @@ function ensureStyles() {
       background: linear-gradient(180deg, rgba(3, 12, 20, 0.82), rgba(5, 12, 22, 0.66));
       box-shadow:
         0 0 0 1px rgba(56, 189, 248, 0.04),
-        0 14px 42px rgba(0, 0, 0, 0.34),
+        0 10px 28px rgba(0, 0, 0, 0.26),
         inset 0 0 34px rgba(56, 189, 248, 0.06);
-      backdrop-filter: blur(14px);
-      border-radius: 18px;
+      backdrop-filter: blur(10px);
+      border-radius: 14px;
     }
 
     .helios-hud-panel::after {
@@ -68,18 +69,18 @@ function ensureStyles() {
 
     .helios-hud .hud-caption {
       color: rgba(152, 234, 255, 0.8);
-      font-size: 0.64rem;
+      font-size: 0.58rem;
     }
 
     .helios-hud .hud-value {
       color: #effcff;
-      font-size: 1.05rem;
-      margin-top: 0.2rem;
+      font-size: 0.9rem;
+      margin-top: 0.14rem;
     }
 
     .helios-hud .hud-grid {
       display: grid;
-      gap: 0.95rem;
+      gap: 0.72rem;
       position: relative;
       z-index: 1;
     }
@@ -88,66 +89,66 @@ function ensureStyles() {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0.9rem;
+      gap: 0.65rem;
       position: relative;
       z-index: 1;
     }
 
     .helios-flight-panel {
-      top: 18px;
-      left: 18px;
-      width: min(360px, calc(100vw - 36px));
-      padding: 16px 18px 18px;
+      top: var(--hud-gap);
+      left: var(--hud-gap);
+      width: min(300px, calc(100vw - 28px));
+      padding: 13px 14px 14px;
     }
 
     .helios-status-panel {
-      top: 18px;
-      right: 18px;
-      width: min(360px, calc(100vw - 36px));
-      padding: 16px 18px 18px;
+      top: var(--hud-gap);
+      right: var(--hud-gap);
+      width: min(290px, calc(100vw - 28px));
+      padding: 13px 14px 14px;
       text-align: right;
     }
 
     .helios-mode-panel {
-      left: 18px;
-      bottom: 18px;
-      width: min(320px, calc(100vw - 36px));
-      padding: 15px 18px 16px;
+      left: var(--hud-gap);
+      bottom: var(--hud-gap);
+      width: min(250px, calc(100vw - 28px));
+      padding: 13px 14px 14px;
     }
 
     .helios-selection-panel {
-      top: 148px;
-      right: 18px;
-      width: min(320px, calc(100vw - 36px));
-      padding: 15px 18px 16px;
+      top: 112px;
+      right: var(--hud-gap);
+      width: min(270px, calc(100vw - 28px));
+      padding: 13px 14px 14px;
     }
 
     .helios-controls-panel {
-      right: 18px;
-      bottom: 18px;
-      width: min(385px, calc(100vw - 36px));
-      padding: 15px 18px 16px;
-      line-height: 1.55;
-      font-size: 0.73rem;
+      right: var(--hud-gap);
+      bottom: var(--hud-gap);
+      width: min(330px, calc(100vw - 28px));
+      padding: 13px 14px 14px;
+      line-height: 1.45;
+      font-size: 0.66rem;
     }
 
     .helios-center-stack {
       position: absolute;
       left: 50%;
-      bottom: 30px;
+      bottom: 18px;
       transform: translateX(-50%);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
       pointer-events: none;
     }
 
     .helios-crosshair {
-      width: 84px;
-      height: 84px;
-      opacity: 0.86;
-      filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.18));
+      width: 62px;
+      height: 62px;
+      opacity: 0.74;
+      filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.14));
     }
 
     .helios-warp-button {
@@ -155,13 +156,14 @@ function ensureStyles() {
       border: 1px solid rgba(56, 189, 248, 0.35);
       background: linear-gradient(180deg, rgba(8, 23, 37, 0.95), rgba(3, 12, 20, 0.8));
       color: #9fe7ff;
-      padding: 10px 18px;
+      padding: 8px 15px;
       border-radius: 999px;
       font: inherit;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.08em;
+      font-size: 0.76rem;
       cursor: pointer;
       transition: transform 140ms ease, opacity 140ms ease, border-color 140ms ease;
-      box-shadow: 0 0 24px rgba(56, 189, 248, 0.12);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.1);
     }
 
     .helios-warp-button:hover:not(:disabled) {
@@ -175,7 +177,7 @@ function ensureStyles() {
     }
 
     .helios-landed {
-      padding: 8px 16px;
+      padding: 6px 12px;
       border-radius: 999px;
       background: rgba(255, 152, 73, 0.18);
       border: 1px solid rgba(255, 172, 107, 0.4);
@@ -183,6 +185,7 @@ function ensureStyles() {
       box-shadow: 0 0 20px rgba(255, 145, 66, 0.2);
       opacity: 0;
       transition: opacity 180ms ease;
+      font-size: 0.75rem;
     }
 
     .helios-landed.visible {
@@ -207,8 +210,8 @@ function ensureStyles() {
     }
 
     .helios-fuel-bar span {
-      width: 17px;
-      height: 11px;
+      width: 14px;
+      height: 9px;
       border-radius: 3px;
       border: 1px solid rgba(56, 189, 248, 0.28);
       background: rgba(14, 40, 54, 0.76);
@@ -225,7 +228,7 @@ function ensureStyles() {
 
     .helios-integrity-track {
       width: 100%;
-      height: 10px;
+      height: 8px;
       border-radius: 999px;
       overflow: hidden;
       background: rgba(9, 25, 37, 0.9);
@@ -248,59 +251,60 @@ function ensureStyles() {
       align-items: center;
       position: relative;
       z-index: 1;
+      font-size: 0.74rem;
     }
 
     .helios-kv .label {
       color: rgba(149, 226, 248, 0.72);
-      font-size: 0.66rem;
+      font-size: 0.58rem;
     }
 
     .helios-kv .value {
       color: #f2fcff;
       text-align: right;
-      font-size: 0.84rem;
+      font-size: 0.76rem;
     }
 
     .helios-selection-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.8rem 1rem;
-      margin-top: 1rem;
+      gap: 0.55rem 0.75rem;
+      margin-top: 0.8rem;
       position: relative;
       z-index: 1;
     }
 
     .helios-selection-grid .metric-label {
       color: rgba(149, 226, 248, 0.72);
-      font-size: 0.62rem;
+      font-size: 0.56rem;
     }
 
     .helios-selection-grid .metric-value {
-      margin-top: 0.18rem;
-      font-size: 0.85rem;
+      margin-top: 0.12rem;
+      font-size: 0.74rem;
       color: #f2fcff;
     }
 
     .helios-status-line {
-      margin-top: 0.85rem;
+      margin-top: 0.6rem;
       color: rgba(160, 230, 255, 0.76);
-      font-size: 0.66rem;
-      line-height: 1.45;
+      font-size: 0.58rem;
+      line-height: 1.35;
       position: relative;
       z-index: 1;
     }
 
     .helios-status-note {
-      margin-top: 0.8rem;
-      font-size: 0.69rem;
-      line-height: 1.5;
+      margin-top: 0.6rem;
+      font-size: 0.6rem;
+      line-height: 1.4;
       color: rgba(205, 242, 255, 0.76);
       position: relative;
       z-index: 1;
     }
 
     .helios-help-list {
-      margin: 0.8rem 0 0;
+      margin: 0.55rem 0 0;
       padding: 0;
       list-style: none;
       position: relative;
@@ -308,7 +312,7 @@ function ensureStyles() {
     }
 
     .helios-help-list li + li {
-      margin-top: 0.28rem;
+      margin-top: 0.2rem;
     }
 
     .helios-pause {
@@ -329,8 +333,8 @@ function ensureStyles() {
     }
 
     .helios-pause-card {
-      padding: 22px 28px;
-      border-radius: 22px;
+      padding: 18px 22px;
+      border-radius: 18px;
       border: 1px solid rgba(56, 189, 248, 0.26);
       background: linear-gradient(180deg, rgba(4, 13, 21, 0.92), rgba(4, 10, 16, 0.86));
       box-shadow: 0 0 40px rgba(0, 0, 0, 0.34);
@@ -453,8 +457,8 @@ function ensureStyles() {
       display: inline-flex;
       align-items: center;
       gap: 0.45rem;
-      padding: 8px 12px;
-      margin-top: 0.85rem;
+      padding: 6px 10px;
+      margin-top: 0.6rem;
       border-radius: 999px;
       background: rgba(11, 28, 40, 0.7);
       border: 1px solid rgba(56, 189, 248, 0.22);
@@ -465,13 +469,13 @@ function ensureStyles() {
     .helios-labels .planet-label {
       position: absolute;
       transform: translateX(-50%);
-      padding: 7px 12px;
+      padding: 5px 10px;
       border-radius: 999px;
       border: 1px solid rgba(56, 189, 248, 0.26);
       background: linear-gradient(180deg, rgba(8, 25, 36, 0.92), rgba(2, 10, 18, 0.84));
       box-shadow: 0 0 18px rgba(56, 189, 248, 0.12);
       color: #effcff;
-      font-size: 0.68rem;
+      font-size: 0.6rem;
       opacity: 0;
       transition: opacity 120ms ease;
       white-space: nowrap;
@@ -484,11 +488,39 @@ function ensureStyles() {
     @media (max-width: 900px) {
       .helios-selection-panel {
         top: auto;
-        bottom: 184px;
+        bottom: 150px;
       }
 
       .helios-status-panel {
-        top: 154px;
+        top: 128px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .helios-hud {
+        --hud-gap: 10px;
+      }
+
+      .helios-flight-panel,
+      .helios-status-panel,
+      .helios-mode-panel,
+      .helios-selection-panel,
+      .helios-controls-panel {
+        width: min(220px, calc(100vw - 20px));
+        padding: 10px 11px 11px;
+      }
+
+      .helios-controls-panel {
+        display: none;
+      }
+
+      .helios-selection-panel {
+        bottom: 112px;
+      }
+
+      .helios-crosshair {
+        width: 52px;
+        height: 52px;
       }
     }
   `;

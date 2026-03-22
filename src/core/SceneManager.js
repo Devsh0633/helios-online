@@ -306,7 +306,9 @@ export default class SceneManager {
       }
     }
 
-    this.controls.update();
+    if (this.controls.enabled || this.focusTransition) {
+      this.controls.update();
+    }
 
     this.milkyWay.position.copy(this.camera.position);
     this.starField.position.copy(this.camera.position);

@@ -22,6 +22,7 @@ function ensureStyles() {
       font-family: "Space Mono", "Consolas", monospace;
       text-transform: uppercase;
       letter-spacing: 0.08em;
+      transition: opacity 140ms ease;
     }
 
     .helios-nav-hud.hidden {
@@ -33,10 +34,10 @@ function ensureStyles() {
       border: 1px solid rgba(56, 189, 248, 0.24);
       background: linear-gradient(180deg, rgba(5, 14, 26, 0.76), rgba(2, 9, 17, 0.66));
       box-shadow:
-        0 12px 32px rgba(0, 0, 0, 0.24),
+        0 10px 24px rgba(0, 0, 0, 0.18),
         inset 0 0 26px rgba(56, 189, 248, 0.05);
-      backdrop-filter: blur(10px);
-      border-radius: 18px;
+      backdrop-filter: blur(8px);
+      border-radius: 14px;
       overflow: hidden;
     }
 
@@ -57,22 +58,22 @@ function ensureStyles() {
     }
 
     .helios-nav-compass {
-      top: 18px;
+      top: 14px;
       left: 50%;
-      width: 260px;
-      padding: 14px 18px 16px;
+      width: 196px;
+      padding: 10px 12px 12px;
       transform: translateX(-50%);
       text-align: center;
     }
 
     .helios-nav-compass-ring {
       position: relative;
-      width: 170px;
-      height: 170px;
-      margin: 10px auto 0;
+      width: 122px;
+      height: 122px;
+      margin: 8px auto 0;
       border-radius: 50%;
       border: 1px solid rgba(56, 189, 248, 0.32);
-      box-shadow: inset 0 0 24px rgba(56, 189, 248, 0.1);
+      box-shadow: inset 0 0 18px rgba(56, 189, 248, 0.08);
       transition: transform 120ms ease;
     }
 
@@ -82,20 +83,20 @@ function ensureStyles() {
       top: 50%;
       transform: translate(-50%, -50%);
       color: rgba(180, 233, 255, 0.88);
-      font-size: 0.78rem;
+      font-size: 0.62rem;
     }
 
-    .helios-nav-compass-ring .north { transform: translate(-50%, -50%) translateY(-70px); }
-    .helios-nav-compass-ring .south { transform: translate(-50%, -50%) translateY(70px); }
-    .helios-nav-compass-ring .east { transform: translate(-50%, -50%) translateX(70px); }
-    .helios-nav-compass-ring .west { transform: translate(-50%, -50%) translateX(-70px); }
+    .helios-nav-compass-ring .north { transform: translate(-50%, -50%) translateY(-50px); }
+    .helios-nav-compass-ring .south { transform: translate(-50%, -50%) translateY(50px); }
+    .helios-nav-compass-ring .east { transform: translate(-50%, -50%) translateX(50px); }
+    .helios-nav-compass-ring .west { transform: translate(-50%, -50%) translateX(-50px); }
 
     .helios-nav-compass-needle {
       position: absolute;
       left: 50%;
       top: 50%;
       width: 2px;
-      height: 82px;
+      height: 58px;
       transform: translate(-50%, -100%);
       background: linear-gradient(180deg, rgba(255, 230, 132, 0.95), rgba(56, 189, 248, 0.0));
       box-shadow: 0 0 14px rgba(255, 225, 120, 0.24);
@@ -105,8 +106,8 @@ function ensureStyles() {
       position: absolute;
       left: 50%;
       top: 50%;
-      width: 14px;
-      height: 14px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       transform: translate(-50%, -50%);
       background: #7fe8ff;
@@ -114,18 +115,18 @@ function ensureStyles() {
     }
 
     .helios-nav-status {
-      top: 34px;
-      right: 18px;
-      width: min(340px, calc(100vw - 36px));
-      padding: 16px 18px;
+      top: 20px;
+      right: 14px;
+      width: min(250px, calc(100vw - 28px));
+      padding: 11px 12px;
     }
 
     .helios-nav-grid {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
-      gap: 0.55rem 0.85rem;
-      margin-top: 0.75rem;
-      font-size: 0.82rem;
+      gap: 0.36rem 0.65rem;
+      margin-top: 0.5rem;
+      font-size: 0.68rem;
     }
 
     .helios-nav-grid .label {
@@ -151,10 +152,10 @@ function ensureStyles() {
 
     .helios-nav-arrow {
       position: absolute;
-      width: 44px;
-      height: 44px;
-      margin-left: -22px;
-      margin-top: -22px;
+      width: 34px;
+      height: 34px;
+      margin-left: -17px;
+      margin-top: -17px;
       opacity: 0;
       transition: opacity 120ms ease;
       filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.22));
@@ -165,19 +166,20 @@ function ensureStyles() {
     }
 
     .helios-nav-arrow svg {
-      width: 44px;
-      height: 44px;
+      width: 34px;
+      height: 34px;
     }
 
     .helios-nav-assist {
       left: 50%;
-      bottom: 156px;
+      bottom: 122px;
       transform: translateX(-50%);
-      padding: 12px 18px;
-      min-width: min(640px, calc(100vw - 36px));
+      padding: 9px 13px;
+      min-width: min(460px, calc(100vw - 28px));
       text-align: center;
       opacity: 0;
       transition: opacity 140ms ease;
+      font-size: 0.68rem;
     }
 
     .helios-nav-assist.visible {
@@ -187,6 +189,38 @@ function ensureStyles() {
     .helios-nav-assist .value {
       color: #ffe7a5;
       text-shadow: 0 0 16px rgba(255, 220, 121, 0.18);
+    }
+
+    @media (max-width: 900px) {
+      .helios-nav-compass {
+        top: auto;
+        bottom: 12px;
+        left: auto;
+        right: 12px;
+        transform: none;
+        width: 148px;
+        padding: 8px 10px 10px;
+      }
+
+      .helios-nav-compass-ring {
+        width: 92px;
+        height: 92px;
+      }
+
+      .helios-nav-compass-ring .north { transform: translate(-50%, -50%) translateY(-38px); }
+      .helios-nav-compass-ring .south { transform: translate(-50%, -50%) translateY(38px); }
+      .helios-nav-compass-ring .east { transform: translate(-50%, -50%) translateX(38px); }
+      .helios-nav-compass-ring .west { transform: translate(-50%, -50%) translateX(-38px); }
+
+      .helios-nav-compass-needle {
+        height: 42px;
+      }
+
+      .helios-nav-status {
+        top: 12px;
+        right: 12px;
+        width: min(220px, calc(100vw - 24px));
+      }
     }
   `;
 
@@ -318,6 +352,8 @@ export default class NavigationHUD {
     this.targetArrow = this.container.querySelector('[data-target-arrow]');
     this.assistPanel = this.container.querySelector('[data-assist-panel]');
     this.assistValue = this.container.querySelector('[data-assist-value]');
+    this.statusPanel = this.container.querySelector('.helios-nav-status');
+    this.compassPanel = this.container.querySelector('.helios-nav-compass');
     this.root.appendChild(this.container);
 
     this.tmpVector = new THREE.Vector3();
@@ -462,6 +498,9 @@ export default class NavigationHUD {
 
   update({ ship, warpState, mapOpen = false, elapsedTimeSeconds = 0 }) {
     this.container.classList.toggle('hidden', mapOpen);
+    const hasTarget = Boolean(warpState.targetBody);
+    this.statusPanel.style.opacity = hasTarget || warpState.status !== 'NO_TARGET' ? '1' : '0.72';
+    this.compassPanel.style.opacity = '0.78';
 
     if (mapOpen) {
       this.speedArrow.visible = false;
