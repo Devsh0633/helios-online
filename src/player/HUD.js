@@ -18,7 +18,7 @@ function ensureStyles() {
       font-family: "Space Mono", "Consolas", monospace;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      --hud-gap: 14px;
+      --hud-gap: 12px;
     }
 
     .helios-hud * {
@@ -36,7 +36,8 @@ function ensureStyles() {
         0 10px 28px rgba(0, 0, 0, 0.26),
         inset 0 0 34px rgba(56, 189, 248, 0.06);
       backdrop-filter: blur(10px);
-      border-radius: 14px;
+      border-radius: 12px;
+      opacity: 0.9;
     }
 
     .helios-hud-panel::after {
@@ -69,12 +70,12 @@ function ensureStyles() {
 
     .helios-hud .hud-caption {
       color: rgba(152, 234, 255, 0.8);
-      font-size: 0.58rem;
+      font-size: 0.5rem;
     }
 
     .helios-hud .hud-value {
       color: #effcff;
-      font-size: 0.9rem;
+      font-size: 0.74rem;
       margin-top: 0.14rem;
     }
 
@@ -97,57 +98,58 @@ function ensureStyles() {
     .helios-flight-panel {
       top: var(--hud-gap);
       left: var(--hud-gap);
-      width: min(300px, calc(100vw - 28px));
-      padding: 13px 14px 14px;
+      width: min(220px, calc(100vw - 24px));
+      padding: 10px 11px 11px;
     }
 
     .helios-status-panel {
       top: var(--hud-gap);
       right: var(--hud-gap);
-      width: min(290px, calc(100vw - 28px));
-      padding: 13px 14px 14px;
+      width: min(212px, calc(100vw - 24px));
+      padding: 10px 11px 11px;
       text-align: right;
     }
 
     .helios-mode-panel {
       left: var(--hud-gap);
       bottom: var(--hud-gap);
-      width: min(250px, calc(100vw - 28px));
-      padding: 13px 14px 14px;
+      width: min(180px, calc(100vw - 24px));
+      padding: 10px 11px 11px;
     }
 
     .helios-selection-panel {
-      top: 112px;
+      top: 88px;
       right: var(--hud-gap);
-      width: min(270px, calc(100vw - 28px));
-      padding: 13px 14px 14px;
+      width: min(212px, calc(100vw - 24px));
+      padding: 10px 11px 11px;
     }
 
     .helios-controls-panel {
       right: var(--hud-gap);
       bottom: var(--hud-gap);
-      width: min(330px, calc(100vw - 28px));
-      padding: 13px 14px 14px;
-      line-height: 1.45;
-      font-size: 0.66rem;
+      width: min(270px, calc(100vw - 24px));
+      padding: 10px 11px 11px;
+      line-height: 1.35;
+      font-size: 0.56rem;
+      opacity: 0.74;
     }
 
     .helios-center-stack {
       position: absolute;
       left: 50%;
-      bottom: 18px;
+      bottom: 14px;
       transform: translateX(-50%);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: 7px;
       pointer-events: none;
     }
 
     .helios-crosshair {
-      width: 62px;
-      height: 62px;
-      opacity: 0.74;
+      width: 46px;
+      height: 46px;
+      opacity: 0.66;
       filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.14));
     }
 
@@ -156,11 +158,11 @@ function ensureStyles() {
       border: 1px solid rgba(56, 189, 248, 0.35);
       background: linear-gradient(180deg, rgba(8, 23, 37, 0.95), rgba(3, 12, 20, 0.8));
       color: #9fe7ff;
-      padding: 8px 15px;
+      padding: 6px 11px;
       border-radius: 999px;
       font: inherit;
       letter-spacing: 0.08em;
-      font-size: 0.76rem;
+      font-size: 0.64rem;
       cursor: pointer;
       transition: transform 140ms ease, opacity 140ms ease, border-color 140ms ease;
       box-shadow: 0 0 18px rgba(56, 189, 248, 0.1);
@@ -177,7 +179,7 @@ function ensureStyles() {
     }
 
     .helios-landed {
-      padding: 6px 12px;
+      padding: 5px 10px;
       border-radius: 999px;
       background: rgba(255, 152, 73, 0.18);
       border: 1px solid rgba(255, 172, 107, 0.4);
@@ -185,7 +187,7 @@ function ensureStyles() {
       box-shadow: 0 0 20px rgba(255, 145, 66, 0.2);
       opacity: 0;
       transition: opacity 180ms ease;
-      font-size: 0.75rem;
+      font-size: 0.62rem;
     }
 
     .helios-landed.visible {
@@ -210,8 +212,8 @@ function ensureStyles() {
     }
 
     .helios-fuel-bar span {
-      width: 14px;
-      height: 9px;
+      width: 11px;
+      height: 7px;
       border-radius: 3px;
       border: 1px solid rgba(56, 189, 248, 0.28);
       background: rgba(14, 40, 54, 0.76);
@@ -228,7 +230,7 @@ function ensureStyles() {
 
     .helios-integrity-track {
       width: 100%;
-      height: 8px;
+      height: 6px;
       border-radius: 999px;
       overflow: hidden;
       background: rgba(9, 25, 37, 0.9);
@@ -251,18 +253,18 @@ function ensureStyles() {
       align-items: center;
       position: relative;
       z-index: 1;
-      font-size: 0.74rem;
+      font-size: 0.64rem;
     }
 
     .helios-kv .label {
       color: rgba(149, 226, 248, 0.72);
-      font-size: 0.58rem;
+      font-size: 0.5rem;
     }
 
     .helios-kv .value {
       color: #f2fcff;
       text-align: right;
-      font-size: 0.76rem;
+      font-size: 0.66rem;
     }
 
     .helios-selection-grid {
@@ -276,19 +278,19 @@ function ensureStyles() {
 
     .helios-selection-grid .metric-label {
       color: rgba(149, 226, 248, 0.72);
-      font-size: 0.56rem;
+      font-size: 0.48rem;
     }
 
     .helios-selection-grid .metric-value {
       margin-top: 0.12rem;
-      font-size: 0.74rem;
+      font-size: 0.62rem;
       color: #f2fcff;
     }
 
     .helios-status-line {
       margin-top: 0.6rem;
       color: rgba(160, 230, 255, 0.76);
-      font-size: 0.58rem;
+      font-size: 0.52rem;
       line-height: 1.35;
       position: relative;
       z-index: 1;
@@ -296,7 +298,7 @@ function ensureStyles() {
 
     .helios-status-note {
       margin-top: 0.6rem;
-      font-size: 0.6rem;
+      font-size: 0.54rem;
       line-height: 1.4;
       color: rgba(205, 242, 255, 0.76);
       position: relative;
@@ -457,7 +459,7 @@ function ensureStyles() {
       display: inline-flex;
       align-items: center;
       gap: 0.45rem;
-      padding: 6px 10px;
+      padding: 5px 9px;
       margin-top: 0.6rem;
       border-radius: 999px;
       background: rgba(11, 28, 40, 0.7);
@@ -469,13 +471,13 @@ function ensureStyles() {
     .helios-labels .planet-label {
       position: absolute;
       transform: translateX(-50%);
-      padding: 5px 10px;
+      padding: 4px 8px;
       border-radius: 999px;
       border: 1px solid rgba(56, 189, 248, 0.26);
       background: linear-gradient(180deg, rgba(8, 25, 36, 0.92), rgba(2, 10, 18, 0.84));
       box-shadow: 0 0 18px rgba(56, 189, 248, 0.12);
       color: #effcff;
-      font-size: 0.6rem;
+      font-size: 0.52rem;
       opacity: 0;
       transition: opacity 120ms ease;
       white-space: nowrap;
@@ -488,11 +490,11 @@ function ensureStyles() {
     @media (max-width: 900px) {
       .helios-selection-panel {
         top: auto;
-        bottom: 150px;
+        bottom: 126px;
       }
 
       .helios-status-panel {
-        top: 128px;
+        top: 104px;
       }
     }
 
@@ -506,8 +508,8 @@ function ensureStyles() {
       .helios-mode-panel,
       .helios-selection-panel,
       .helios-controls-panel {
-        width: min(220px, calc(100vw - 20px));
-        padding: 10px 11px 11px;
+        width: min(188px, calc(100vw - 20px));
+        padding: 9px 10px 10px;
       }
 
       .helios-controls-panel {
@@ -515,12 +517,12 @@ function ensureStyles() {
       }
 
       .helios-selection-panel {
-        bottom: 112px;
+        bottom: 98px;
       }
 
       .helios-crosshair {
-        width: 52px;
-        height: 52px;
+        width: 40px;
+        height: 40px;
       }
     }
   `;
@@ -630,16 +632,16 @@ export default class HUD {
       <div class="helios-hud-panel helios-controls-panel">
         <div class="hud-caption">Controls Reference</div>
         <ul class="helios-help-list">
-          <li>W/S: Thrust Forward/Back | A/D: Strafe Left/Right | Q/E: Up/Down</li>
-          <li>Arrow/Mouse: Pitch and Yaw | Z/X: Roll | Shift: Boost</li>
-          <li>F: Toggle Cinematic | V: Toggle First/Third Person | M: Open System Map | W: Engage Warp in Map</li>
+          <li>W/S thrust | A/D strafe | Q/E lift</li>
+          <li>Mouse/Arrows aim | Z/X roll | Shift boost</li>
+          <li>F cinematic | V view | M map | W warp in map</li>
           <li>Right Mouse: Orbit Chase Camera | Esc: Pause Menu</li>
         </ul>
       </div>
 
       <div class="helios-center-stack">
         <div class="helios-crosshair" aria-hidden="true">
-          <svg viewBox="0 0 120 120" width="84" height="84">
+          <svg viewBox="0 0 120 120" width="58" height="58">
             <defs>
               <linearGradient id="heliosCrosshair" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stop-color="#8df4ff" />

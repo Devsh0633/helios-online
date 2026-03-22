@@ -37,8 +37,9 @@ function ensureStyles() {
         0 10px 24px rgba(0, 0, 0, 0.18),
         inset 0 0 26px rgba(56, 189, 248, 0.05);
       backdrop-filter: blur(8px);
-      border-radius: 14px;
+      border-radius: 12px;
       overflow: hidden;
+      opacity: 0.84;
     }
 
     .helios-nav-panel::after {
@@ -58,19 +59,19 @@ function ensureStyles() {
     }
 
     .helios-nav-compass {
-      top: 14px;
+      top: 12px;
       left: 50%;
-      width: 196px;
-      padding: 10px 12px 12px;
+      width: 158px;
+      padding: 8px 10px 10px;
       transform: translateX(-50%);
       text-align: center;
     }
 
     .helios-nav-compass-ring {
       position: relative;
-      width: 122px;
-      height: 122px;
-      margin: 8px auto 0;
+      width: 94px;
+      height: 94px;
+      margin: 6px auto 0;
       border-radius: 50%;
       border: 1px solid rgba(56, 189, 248, 0.32);
       box-shadow: inset 0 0 18px rgba(56, 189, 248, 0.08);
@@ -83,20 +84,20 @@ function ensureStyles() {
       top: 50%;
       transform: translate(-50%, -50%);
       color: rgba(180, 233, 255, 0.88);
-      font-size: 0.62rem;
+      font-size: 0.5rem;
     }
 
-    .helios-nav-compass-ring .north { transform: translate(-50%, -50%) translateY(-50px); }
-    .helios-nav-compass-ring .south { transform: translate(-50%, -50%) translateY(50px); }
-    .helios-nav-compass-ring .east { transform: translate(-50%, -50%) translateX(50px); }
-    .helios-nav-compass-ring .west { transform: translate(-50%, -50%) translateX(-50px); }
+    .helios-nav-compass-ring .north { transform: translate(-50%, -50%) translateY(-38px); }
+    .helios-nav-compass-ring .south { transform: translate(-50%, -50%) translateY(38px); }
+    .helios-nav-compass-ring .east { transform: translate(-50%, -50%) translateX(38px); }
+    .helios-nav-compass-ring .west { transform: translate(-50%, -50%) translateX(-38px); }
 
     .helios-nav-compass-needle {
       position: absolute;
       left: 50%;
       top: 50%;
       width: 2px;
-      height: 58px;
+      height: 44px;
       transform: translate(-50%, -100%);
       background: linear-gradient(180deg, rgba(255, 230, 132, 0.95), rgba(56, 189, 248, 0.0));
       box-shadow: 0 0 14px rgba(255, 225, 120, 0.24);
@@ -106,8 +107,8 @@ function ensureStyles() {
       position: absolute;
       left: 50%;
       top: 50%;
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       transform: translate(-50%, -50%);
       background: #7fe8ff;
@@ -115,10 +116,10 @@ function ensureStyles() {
     }
 
     .helios-nav-status {
-      top: 20px;
-      right: 14px;
-      width: min(250px, calc(100vw - 28px));
-      padding: 11px 12px;
+      top: 12px;
+      right: 12px;
+      width: min(198px, calc(100vw - 24px));
+      padding: 9px 10px;
     }
 
     .helios-nav-grid {
@@ -126,7 +127,7 @@ function ensureStyles() {
       grid-template-columns: minmax(0, 1fr) auto;
       gap: 0.36rem 0.65rem;
       margin-top: 0.5rem;
-      font-size: 0.68rem;
+      font-size: 0.58rem;
     }
 
     .helios-nav-grid .label {
@@ -152,10 +153,10 @@ function ensureStyles() {
 
     .helios-nav-arrow {
       position: absolute;
-      width: 34px;
-      height: 34px;
-      margin-left: -17px;
-      margin-top: -17px;
+      width: 26px;
+      height: 26px;
+      margin-left: -13px;
+      margin-top: -13px;
       opacity: 0;
       transition: opacity 120ms ease;
       filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.22));
@@ -166,20 +167,20 @@ function ensureStyles() {
     }
 
     .helios-nav-arrow svg {
-      width: 34px;
-      height: 34px;
+      width: 26px;
+      height: 26px;
     }
 
     .helios-nav-assist {
       left: 50%;
-      bottom: 122px;
+      bottom: 102px;
       transform: translateX(-50%);
-      padding: 9px 13px;
-      min-width: min(460px, calc(100vw - 28px));
+      padding: 7px 10px;
+      min-width: min(340px, calc(100vw - 24px));
       text-align: center;
       opacity: 0;
       transition: opacity 140ms ease;
-      font-size: 0.68rem;
+      font-size: 0.58rem;
     }
 
     .helios-nav-assist.visible {
@@ -198,28 +199,28 @@ function ensureStyles() {
         left: auto;
         right: 12px;
         transform: none;
-        width: 148px;
-        padding: 8px 10px 10px;
+        width: 128px;
+        padding: 7px 8px 8px;
       }
 
       .helios-nav-compass-ring {
-        width: 92px;
-        height: 92px;
+        width: 76px;
+        height: 76px;
       }
 
-      .helios-nav-compass-ring .north { transform: translate(-50%, -50%) translateY(-38px); }
-      .helios-nav-compass-ring .south { transform: translate(-50%, -50%) translateY(38px); }
-      .helios-nav-compass-ring .east { transform: translate(-50%, -50%) translateX(38px); }
-      .helios-nav-compass-ring .west { transform: translate(-50%, -50%) translateX(-38px); }
+      .helios-nav-compass-ring .north { transform: translate(-50%, -50%) translateY(-30px); }
+      .helios-nav-compass-ring .south { transform: translate(-50%, -50%) translateY(30px); }
+      .helios-nav-compass-ring .east { transform: translate(-50%, -50%) translateX(30px); }
+      .helios-nav-compass-ring .west { transform: translate(-50%, -50%) translateX(-30px); }
 
       .helios-nav-compass-needle {
-        height: 42px;
+        height: 34px;
       }
 
       .helios-nav-status {
         top: 12px;
         right: 12px;
-        width: min(220px, calc(100vw - 24px));
+        width: min(184px, calc(100vw - 24px));
       }
     }
   `;

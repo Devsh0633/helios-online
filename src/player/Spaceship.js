@@ -72,6 +72,7 @@ export default class Spaceship {
     this.idleSeconds = 0;
     this.spawnLabel = 'Initializing launch coordinates';
     this.targetBody = null;
+    this.referenceBody = null;
     this.respawnPosition = new THREE.Vector3();
     this.respawnQuaternion = new THREE.Quaternion();
 
@@ -284,6 +285,14 @@ export default class Spaceship {
     this.state.spawnLabel = label;
   }
 
+  setReferenceBody(body) {
+    this.referenceBody = body ?? null;
+  }
+
+  getReferenceBody() {
+    return this.referenceBody;
+  }
+
   rememberSafeTransform() {
     this.respawnPosition.copy(this.group.position);
     this.respawnQuaternion.copy(this.group.quaternion);
@@ -310,7 +319,7 @@ export default class Spaceship {
     this.velocity.addScaledVector(vector, deltaSeconds);
   }
 
-  spawnAt({ position, normal, forward, label }) {
+  spawnAt({ position, normal, forward, label, body }) {
     this.group.position.copy(position);
     this.velocity.set(0, 0, 0);
     this.angularVelocity.set(0, 0, 0);
@@ -322,6 +331,10 @@ export default class Spaceship {
 
     if (label) {
       this.setSpawnLabel(label);
+    }
+
+    if (body) {
+      this.setReferenceBody(body);
     }
 
     this.setOrientationFromSurface(normal, forward);
@@ -379,7 +392,7 @@ export default class Spaceship {
   }
 
   update(deltaSeconds, commands, solarSystem, elapsedTimeSeconds) {
-    const initialNearest = solarSystem.findNearestBody(this.group.position);
+    const initialNearest = solarSystem.findNearestBody(this.group.position, this.referenceBody);
     const initialNearestBody = initialNearest?.body ?? null;
     const environment = initialNearestBody
       ? solarSystem.getBodyEnvironment(initialNearestBody, this.group.position, this.shipCollisionRadius)
@@ -431,7 +444,7 @@ export default class Spaceship {
     this.enforceSpeedLimits(environment.inAtmosphere);
     this.group.position.addScaledVector(this.velocity, deltaSeconds);
 
-    const postMoveNearest = solarSystem.findNearestBody(this.group.position);
+    const postMoveNearest = solarSystem.findNearestBody(this.group.position, this.referenceBody);
     const postMoveBody = postMoveNearest?.body ?? initialNearestBody;
     const postMoveEnvironment = postMoveBody
       ? solarSystem.getBodyEnvironment(postMoveBody, this.group.position, this.shipCollisionRadius)
@@ -588,6 +601,7 @@ export default class Spaceship {
   landOnBody(body, surfaceNormal) {
     this.landed = true;
     this.landedBody = body;
+    this.referenceBody = body;
     this.landedNormal.copy(surfaceNormal);
     this.lastSafeNormal.copy(surfaceNormal);
     const forward = this.getForward(new THREE.Vector3()).projectOnPlane(surfaceNormal).normalize();

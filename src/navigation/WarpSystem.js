@@ -135,7 +135,10 @@ export default class WarpSystem {
   }
 
   getCurrentEnvironment() {
-    const nearest = this.solarSystem.findNearestBody(this.ship.group.position);
+    const nearest = this.solarSystem.findNearestBody(
+      this.ship.group.position,
+      this.ship.getReferenceBody?.() ?? null
+    );
 
     if (!nearest?.body) {
       return {
@@ -300,7 +303,8 @@ export default class WarpSystem {
     this.ship.spawnAt({
       position: this.arrivalData.position,
       normal: this.arrivalData.normal,
-      forward: this.arrivalData.forward
+      forward: this.arrivalData.forward,
+      body: this.arrivalData.body
     });
     this.ship.rememberSafeTransform();
     this.warping = false;

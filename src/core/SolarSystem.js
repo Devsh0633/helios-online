@@ -228,7 +228,42 @@ export default class SolarSystem {
     };
   }
 
-  findNearestBody(position) {
+  getReferenceBodyRetentionKm(body) {
+    if (!body) {
+      return 0;
+    }
+
+    const atmosphereHeightKm = body.getAtmosphereHeightKm?.() ?? 0;
+
+    if (body.parentBody) {
+      return Math.max(
+        body.data.distanceKm * 0.35,
+        body.data.radiusKm * 24,
+        atmosphereHeightKm * 10,
+        80_000
+      );
+    }
+
+    return Math.max(
+      body.data.radiusKm * 60,
+      atmosphereHeightKm * 40,
+      450_000
+    );
+  }
+
+  findNearestBody(position, preferredBody = null) {
+    if (preferredBody) {
+      const preferredAltitudeKm = preferredBody.getAltitudeKmFromPosition(position);
+      const retentionKm = this.getReferenceBodyRetentionKm(preferredBody);
+
+      if (preferredAltitudeKm <= retentionKm) {
+        return {
+          body: preferredBody,
+          altitudeKm: preferredAltitudeKm
+        };
+      }
+    }
+
     let nearest = null;
     let nearestAltitude = Number.POSITIVE_INFINITY;
 
